@@ -1,10 +1,15 @@
-const defaultProfiles=[{id:'nelson',name:'Nelson',emoji:'👤'},{id:'profile-2',name:'Profil 2',emoji:'👤'},{id:'profile-3',name:'Profil 3',emoji:'👤'}];
-const profiles=JSON.parse(localStorage.getItem('nelsonHubProfiles')||'null')||defaultProfiles;
-let active=localStorage.getItem('nelsonHubActiveProfile')||'nelson';
-const data={matches:[['FC Fleury 91','Prochain match','À synchroniser'],['RC Lens','Prochain match','À synchroniser'],['Racing CFF','Prochain match','À synchroniser'],['SC Braga','Prochain match','À synchroniser']],transport:[['RER C','Paris','Temps réel à connecter'],['Bus favori','Maison','PRIM à connecter']],home:[['Salon','—','OFF'],['Chambre','—','OFF']],agenda:[['Calendrier sportif','Synchronisation API à venir'],['Événements personnels','Backend Symfony prêt à brancher']]};
-function getActive(){return profiles.find(p=>p.id===active)||profiles[0]}
-function save(){localStorage.setItem('nelsonHubProfiles',JSON.stringify(profiles));localStorage.setItem('nelsonHubActiveProfile',active)}
-function render(){const p=getActive();document.querySelector('#hello').textContent=`Bonjour ${p.name}.`;document.querySelector('#profileButton').textContent=`${p.emoji} ${p.name}`;document.querySelector('#matches').innerHTML=data.matches.map(x=>`<div class="row"><strong>${x[0]}</strong><span>${x[1]}</span><small>${x[2]}</small></div>`).join('');document.querySelector('#transport').innerHTML=data.transport.map(x=>`<div class="row"><strong><span class="line">${x[0]}</span></strong><span>${x[1]}</span><small>${x[2]}</small></div>`).join('');document.querySelector('#home').innerHTML=data.home.map(x=>`<div class="row"><strong>${x[0]}</strong><span>${x[1]}</span><small>${x[2]}</small></div>`).join('');document.querySelector('#agenda').innerHTML=data.agenda.map(x=>`<div class="event"><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('');renderProfiles()}
-function renderProfiles(){document.querySelector('#profileList').innerHTML=profiles.map((p,i)=>`<div class="profile-entry"><span>${p.emoji}</span><input value="${p.name.replaceAll('&','&amp;').replaceAll('"','&quot;')}" data-index="${i}" maxlength="30"><button type="button" data-select="${p.id}">${p.id===active?'Actif':'Choisir'}</button></div>`).join('');document.querySelectorAll('[data-index]').forEach(el=>el.addEventListener('change',e=>{profiles[Number(e.target.dataset.index)].name=e.target.value.trim()||defaultProfiles[Number(e.target.dataset.index)].name;save();render()}));document.querySelectorAll('[data-select]').forEach(el=>el.addEventListener('click',e=>{active=e.target.dataset.select;save();render();document.querySelector('#profileDialog').close()}))}
-function tick(){document.querySelector('#clock').textContent=new Intl.DateTimeFormat('fr-FR',{dateStyle:'full',timeStyle:'short',timeZone:'Europe/Paris'}).format(new Date())}
-document.querySelector('#profileButton').addEventListener('click',()=>document.querySelector('#profileDialog').showModal());tick();setInterval(tick,30000);render();if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+function tick(){
+  const el=document.querySelector('#clock');
+  if(el){
+    el.textContent=new Intl.DateTimeFormat('fr-FR',{
+      dateStyle:'full',
+      timeStyle:'short',
+      timeZone:'Europe/Paris'
+    }).format(new Date());
+  }
+}
+tick();
+setInterval(tick,30000);
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
