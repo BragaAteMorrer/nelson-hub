@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1120">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Nelson Hub</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
@@ -15,45 +14,51 @@
     <header class="topbar">
       <div>
         <p class="eyebrow">NELSON HUB</p>
-        <h1 id="hello">Bonjour.</h1>
+        <h1>Ton compagnon de vie.</h1>
         <p id="clock" class="sub"></p>
       </div>
-      <button id="profileButton" class="profile-button" type="button">👤 Profil</button>
     </header>
+
     <section class="hero-card">
       <div>
-        <span class="tag">AUJOURD'HUI</span>
-        <h2>Ton quotidien, au même endroit.</h2>
-        <p>Matchs, transports, maison et agenda. Cette version GitHub Pages fonctionne déjà hors ligne et sert de vitrine/PWA pendant que le backend Symfony est branché.</p>
+        <span class="tag">PWA</span>
+        <h2>Sport, transports, maison et calendrier.</h2>
+        <p>Cette page GitHub Pages est la coque publique/installable. Les comptes personnels, mots de passe, réglages et données privées sont servis uniquement par le backend Symfony sécurisé.</p>
       </div>
-      <div class="hero-status"><span></span> PWA active</div>
+      <div class="hero-status"><span></span> Interface prête</div>
     </section>
+
     <section class="grid">
       <article class="card span-2">
-        <div class="card-head"><div><span class="kicker">SPORT</span><h3>Prochains matchs</h3></div><span class="badge">DEMO</span></div>
-        <div id="matches" class="stack"></div>
+        <div class="card-head"><div><span class="kicker">COMPTES</span><h3>3 utilisateurs indépendants</h3></div></div>
+        <div class="stack">
+          <div class="row"><strong>🔐 Connexion privée</strong><span>Un e-mail + mot de passe par personne</span><small>Symfony</small></div>
+          <div class="row"><strong>⚙️ Réglages séparés</strong><span>Équipes, transports, maison, thème, agenda</span><small>Par compte</small></div>
+          <div class="row"><strong>📱 Multi-appareils</strong><span>Synchronisation via le backend</span><small>À brancher</small></div>
+        </div>
       </article>
+
       <article class="card">
-        <div class="card-head"><div><span class="kicker">IDF MOBILITÉS</span><h3>Transports</h3></div><span class="dot"></span></div>
-        <div id="transport" class="stack"></div>
+        <div class="card-head"><div><span class="kicker">SPORT</span><h3>Matchs</h3></div></div>
+        <p>FC Fleury 91, RC Lens, Racing CFF, SC Braga — personnalisables par utilisateur.</p>
       </article>
+
       <article class="card">
-        <div class="card-head"><div><span class="kicker">MAISON</span><h3>Climatisation</h3></div><span class="badge muted-badge">DEMO</span></div>
-        <div id="home" class="stack"></div>
+        <div class="card-head"><div><span class="kicker">TRANSPORTS</span><h3>IDFM & SNCF</h3></div></div>
+        <p>Arrêts, gares, prochains passages et trajets favoris propres à chaque compte.</p>
       </article>
-      <article class="card span-2">
-        <div class="card-head"><div><span class="kicker">AGENDA</span><h3>À venir</h3></div></div>
-        <div id="agenda" class="timeline"></div>
+
+      <article class="card">
+        <div class="card-head"><div><span class="kicker">MAISON</span><h3>Home Assistant</h3></div></div>
+        <p>Contrôle des appareils autorisés pour chaque personne, sans exposer le token Home Assistant au navigateur.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-head"><div><span class="kicker">AGENDA</span><h3>Calendrier personnel</h3></div></div>
+        <p>Matchs automatiques + événements personnels et préférences de notifications.</p>
       </article>
     </section>
   </main>
-  <dialog id="profileDialog">
-    <form method="dialog" class="dialog-card">
-      <div class="dialog-head"><div><span class="kicker">UTILISATEURS</span><h3>Choisir un profil</h3></div><button value="cancel" aria-label="Fermer">×</button></div>
-      <div id="profileList" class="profile-list"></div>
-      <p class="small">Les noms sont enregistrés localement sur cet appareil. Le backend Symfony permettra ensuite la synchronisation entre appareils.</p>
-    </form>
-  </dialog>
   <script src="app.js"></script>
 </body>
 </html>
