@@ -1,0 +1,35 @@
+name: Build backend package
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'config/**'
+      - 'templates/**'
+      - 'migrations/**'
+      - 'public/**'
+      - 'composer.json'
+      - 'composer.lock'
+      - '.env'
+      - '.github/workflows/backend-package.yml'
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+      - run: composer install --no-dev --prefer-dist --no-progress --optimize-autoloader
+      - run: |
+          mkdir -p build/nelson-hub
+          rsync -a --exclude='.git' --exclude='docs' --exclude='build' --exclude='.env.local' ./ build/nelson-hub/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nelson-hub-backend
+          path: build/nelson-hub
+          retention-days: 14
