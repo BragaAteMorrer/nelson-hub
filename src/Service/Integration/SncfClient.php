@@ -13,6 +13,19 @@ final class SncfClient
 
     public function configured(): bool { return $this->sncfApiToken !== ''; }
 
+    public function searchPlaces(string $query): array
+    {
+        $query = trim($query);
+        if (!$this->configured() || mb_strlen($query) < 2) return [];
+
+        $data = $this->http->request('GET', rtrim($this->sncfApiBase,'/').'/coverage/sncf/places', [
+            'auth_basic' => [$this->sncfApiToken,''],
+            'query' => ['q' => $query, 'type[]' => 'stop_area'],
+        ])->toArray(false);
+
+        return $data['places'] ?? [];
+    }
+
     public function journeys(string $from,string $to,?string $datetime=null): array
     {
         if (!$this->configured()) return [];
