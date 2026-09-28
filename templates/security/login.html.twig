@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Connexion — Nelson Hub{% endblock %}
+{% block body %}
+<main class="shell" style="max-width:520px;padding-top:10vh">
+  <div class="card">
+    <p class="muted">NELSON HUB</p><h1>Connexion</h1>
+    <p class="muted">Chaque personne possède son propre compte, mot de passe et ses propres réglages.</p>
+    {% if error %}<div class="card" style="border-color:#7f1d1d">{{ error.messageKey|trans(error.messageData,'security') }}</div>{% endif %}
+    <form method="post">
+      <label>E-mail</label><input class="input" type="email" name="_username" value="{{ last_username }}" autocomplete="email" required autofocus>
+      <label>Mot de passe</label><input class="input" type="password" name="_password" autocomplete="current-password" required>
+      <label><input type="checkbox" name="_remember_me"> Rester connecté</label>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+      <p><button class="btn" type="submit">Se connecter</button></p>
+    </form>
+  </div>
+</main>
+{% endblock %}
