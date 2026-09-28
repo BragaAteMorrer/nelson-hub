@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes réglages — Nelson Hub{% endblock %}
+{% block body %}
+<main class="shell">
+  <div class="top">
+    <div><p class="muted">NELSON HUB</p><h1>Mes réglages</h1><p class="muted">{{ user.email }}</p></div>
+    <div><a href="{{ path('app_dashboard') }}">← Tableau de bord</a></div>
+  </div>
+
+  {% for message in app.flashes('success') %}<div class="card" style="border-color:#166534">{{ message }}</div>{% endfor %}
+  {% for message in app.flashes('error') %}<div class="card" style="border-color:#991b1b">{{ message }}</div>{% endfor %}
+
+  <form method="post" class="card">
+    <input type="hidden" name="_token" value="{{ csrf_token('account_settings') }}">
+    <h2>Identité & interface</h2>
+    <label>Nom affiché</label><input class="input" name="display_name" value="{{ user.displayName }}">
+    <div class="grid">
+      <div><label>Langue</label><select class="input" name="locale"><option value="fr" {{ settings.locale == 'fr' ? 'selected' }}>Français</option><option value="pt" {{ settings.locale == 'pt' ? 'selected' }}>Português</option><option value="en" {{ settings.locale == 'en' ? 'selected' }}>English</option></select></div>
+      <div><label>Fuseau horaire</label><input class="input" name="timezone" value="{{ settings.timezone }}"></div>
+      <div><label>Thème</label><select class="input" name="theme"><option value="dark" {{ settings.theme == 'dark' ? 'selected' }}>Sombre</option><option value="light" {{ settings.theme == 'light' ? 'selected' }}>Clair</option><option value="auto" {{ settings.theme == 'auto' ? 'selected' }}>Auto</option></select></div>
+      <div><label>Accent</label><input class="input" name="accent" value="{{ settings.accent }}"></div>
+    </div>
+
+    <h2>⚽ Équipes</h2>
+    {% set selected = {} %}
+    {% for team in settings.sports.teams %}{% set selected = selected|merge({(team.key): team.enabled}) %}{% endfor %}
+    <p><label><input type="checkbox" name="team_fleury" {{ selected.fleury|default(false) ? 'checked' }}> FC Fleury 91</label></p>
+    <p><label><input type="checkbox" name="team_lens" {{ selected.lens|default(false) ? 'checked' }}> RC Lens</label></p>
+    <p><label><input type="checkbox" name="team_racing-cff" {{ attribute(selected,'racing-cff')|default(false) ? 'checked' }}> Racing CFF</label></p>
+    <p><label><input type="checkbox" name="team_braga" {{ selected.braga|default(false) ? 'checked' }}> SC Braga</label></p>
+    <label>Notification avant match (minutes)</label><input class="input" type="number" min="0" name="notify_before_minutes" value="{{ settings.sports.notify_before_minutes }}">
+
+    <h2>🚆 Transports</h2>
+    <label>Arrêts IDFM favoris — un identifiant par ligne</label>
+    <textarea class="input" rows="5" name="favorite_stops">{{ settings.transport.favorite_stops|join("\n") }}</textarea>
+    <label>Gares SNCF favorites — un identifiant par ligne</label>
+    <textarea class="input" rows="5" name="favorite_stations">{{ settings.transport.favorite_stations|join("\n") }}</textarea>
+    <p><label><input type="checkbox" name="show_disruptions" {{ settings.transport.show_disruptions ? 'checked' }}> Afficher les perturbations</label></p>
+
+    <h2>🏠 Maison</h2>
+    <label>Entités Home Assistant favorites — une par ligne</label>
+    <textarea class="input" rows="5" name="favorite_entities">{{ settings.home.favorite_entities|join("\n") }}</textarea>
+
+    <h2>📅 Calendrier</h2>
+    <p><label><input type="checkbox" name="include_matches" {{ settings.calendar.include_matches ? 'checked' }}> Ajouter les matchs</label></p>
+    <p><label><input type="checkbox" name="include_personal" {{ settings.calendar.include_personal ? 'checked' }}> Afficher mon calendrier personnel</label></p>
+
+    <button class="btn" type="submit">Enregistrer mes réglages</button>
+  </form>
+
+  <form method="post" action="{{ path('app_account_password') }}" class="card">
+    <input type="hidden" name="_token" value="{{ csrf_token('change_password') }}">
+    <h2>🔐 Mot de passe</h2>
+    <label>Mot de passe actuel</label><input class="input" type="password" name="current_password" autocomplete="current-password" required>
+    <label>Nouveau mot de passe</label><input class="input" type="password" name="new_password" autocomplete="new-password" minlength="10" required>
+    <label>Confirmer</label><input class="input" type="password" name="confirm_password" autocomplete="new-password" minlength="10" required>
+    <button class="btn" type="submit">Changer mon mot de passe</button>
+  </form>
+</main>
+{% endblock %}
