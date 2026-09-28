@@ -1,43 +1,93 @@
 # Nelson Hub
 
-Compagnon de vie personnel construit avec **Symfony + PWA**, accompagné d'une interface statique déployable sur **GitHub Pages**.
+Compagnon de vie personnel en **Symfony + PWA**, pensé pour trois personnes du foyer.
 
-## Objectif
+## Comptes réellement indépendants
 
-Centraliser au même endroit :
+Il n'y a plus de "profils locaux" partagés dans le navigateur.
 
-- résultats et prochains matchs de FC Fleury 91, RC Lens, Racing CFF et SC Braga ;
-- transports Île-de-France via PRIM / Île-de-France Mobilités ;
-- trains SNCF / Navitia ;
-- contrôle de la maison via Home Assistant ;
-- calendrier sportif et personnel ;
-- trois profils utilisateurs distincts ;
-- installation PWA et future enveloppe iOS / `.ipa` via Capacitor.
+Chaque personne possède :
 
-## Profils
+- son propre e-mail de connexion ;
+- son propre mot de passe hashé ;
+- sa propre session ;
+- son nom affiché ;
+- son thème, accent, langue et fuseau horaire ;
+- ses équipes suivies ;
+- ses notifications sportives ;
+- ses arrêts IDFM favoris ;
+- ses gares SNCF favorites ;
+- ses appareils Home Assistant favoris ;
+- ses préférences calendrier.
 
-La V1 comporte trois profils : `Nelson`, `Profil 2` et `Profil 3`. Ils sont renommables.
-
-- Sur GitHub Pages, les noms et le profil actif sont enregistrés dans le navigateur via `localStorage`.
-- Sur Symfony, le profil actif et les noms sont gérés par session.
-- L'étape suivante sera une persistance en base de données avec comptes/PIN et préférences séparées par utilisateur pour synchroniser plusieurs appareils.
+Aucun utilisateur ne modifie les réglages d'un autre via l'interface normale.
 
 ## GitHub Pages
 
-Le site statique se trouve dans `docs/` et est déployé par `.github/workflows/pages.yml`.
+GitHub Pages sert uniquement de **coque PWA publique**. Il ne peut pas exécuter Symfony/PHP et ne contient aucun mot de passe, token API ou donnée privée.
 
-> GitHub Pages ne peut pas exécuter Symfony/PHP. La PWA statique sert d'interface immédiatement accessible, tandis que Symfony sera hébergé séparément et exposera l'API dynamique.
+L'erreur `Resource not accessible by integration` vient du fait que le token GitHub Actions n'a pas le droit d'activer Pages lui-même.
 
-## Backend Symfony
+À faire **une seule fois** dans le repo :
 
-Le backend recevra les connecteurs :
+1. **Settings**
+2. **Pages**
+3. Dans **Build and deployment**
+4. Source : **GitHub Actions**
+5. Puis relancer **Deploy GitHub Pages**
 
-- API football ;
-- IDFM / PRIM ;
-- SNCF / Navitia ;
-- Home Assistant ;
-- agenda et préférences par profil.
+Le workflow a été corrigé pour ne plus tenter d'activer Pages automatiquement.
+
+## Installation Symfony
+
+```bash
+composer install
+cp .env .env.local
+php bin/console doctrine:migrations:migrate
+```
+
+Les secrets doivent aller dans `.env.local`, jamais dans Git.
+
+## Créer les trois comptes
+
+```bash
+php bin/console app:user:create user1@example.com "Utilisateur 1" --admin
+php bin/console app:user:create user2@example.com "Utilisateur 2"
+php bin/console app:user:create user3@example.com "Utilisateur 3"
+```
+
+Le mot de passe est demandé de manière masquée et n'apparaît ni dans Git ni dans l'historique shell de la commande.
+
+## Réglages
+
+Une fois connecté :
+
+- `/` : tableau de bord personnel ;
+- `/settings` : personnalisation complète du compte ;
+- `/settings/password` : changement de mot de passe ;
+- `/api/me/settings` : lecture/modification des préférences du compte connecté.
+
+## Connecteurs serveur
+
+Les intégrations préparées sont :
+
+- API-Football ;
+- Île-de-France Mobilités PRIM ;
+- API SNCF / Navitia ;
+- Home Assistant.
+
+Variables dans `.env.local` :
+
+```dotenv
+FOOTBALL_API_KEY=
+IDFM_API_KEY=
+SNCF_API_TOKEN=
+HOME_ASSISTANT_URL=
+HOME_ASSISTANT_TOKEN=
+```
+
+Les tokens ne doivent jamais être copiés dans `docs/` ou dans du JavaScript GitHub Pages.
 
 ## iPhone
 
-La PWA est déjà installable depuis Safari. Une enveloppe Capacitor/iOS sera ajoutée pour produire un vrai projet Xcode puis un `.ipa` signé.
+La PWA publique est installable depuis Safari. Le backend Symfony fournira les données privées. Une enveloppe Capacitor/Xcode pourra ensuite être ajoutée pour produire un vrai `.ipa`.
