@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1120"><title>{% block title %}Nelson Hub{% endblock %}</title>
+  <style>
+    :root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;background:#070b14;color:#f5f7fb}
+    *{box-sizing:border-box}body{margin:0;background:#070b14}.shell{width:min(1100px,calc(100% - 28px));margin:auto;padding:28px 0}
+    a{color:#7dd3fc}.card{background:#0f1728;border:1px solid #26344c;border-radius:20px;padding:20px;margin:14px 0}
+    input,button{font:inherit;border-radius:12px;padding:11px 13px}.input{width:100%;background:#09111e;border:1px solid #30405e;color:#fff;margin:7px 0 14px}
+    .btn{border:0;background:#d9f3ff;color:#07101f;font-weight:800;cursor:pointer}.muted{color:#94a3b8}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:20px}.pill{padding:6px 9px;border-radius:999px;background:#172640;font-size:.8rem}
+    @media(max-width:700px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
+  </style>
+</head><body>{% block body %}{% endblock %}</body></html>
