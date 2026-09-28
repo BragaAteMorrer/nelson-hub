@@ -4,7 +4,7 @@
 <main class="shell">
   <div class="top">
     <div><p class="muted">NELSON HUB</p><h1>Bonjour {{ user.displayName }}.</h1></div>
-    <div><span class="pill">{{ user.email }}</span> &nbsp; <a href="{{ path('app_logout') }}">Déconnexion</a></div>
+    <div><span class="pill">{{ user.email }}</span> &nbsp; <a href="{{ path('app_account_settings') }}">Réglages</a> · <a href="{{ path('app_logout') }}">Déconnexion</a></div>
   </div>
   <section class="grid">
     <article class="card"><h2>⚽ Sport</h2><p class="muted">Tes équipes uniquement.</p>{% for team in dashboard.sports.teams %}<p><strong>{{ team.name }}</strong></p>{% else %}<p>Aucune équipe suivie.</p>{% endfor %}</article>
@@ -12,6 +12,6 @@
     <article class="card"><h2>🏠 Maison</h2><p>{{ dashboard.home.favorite_entities|length }} appareil(s) favori(s)</p></article>
     <article class="card"><h2>🔌 Connexions</h2>{% for name,ok in dashboard.integrationStatus %}<p>{{ ok ? '🟢' : '⚪' }} {{ name }}</p>{% endfor %}</article>
   </section>
-  <article class="card"><h2>Personnalisation</h2><p class="muted">Ces réglages appartiennent uniquement à ton compte.</p><pre style="white-space:pre-wrap">{{ settings|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre></article>
+  <article class="card"><h2>Personnalisation privée</h2><p class="muted">Tes préférences sont rattachées à ton compte uniquement. Les deux autres utilisateurs ont leurs propres réglages, mot de passe et session.</p><p><a href="{{ path('app_account_settings') }}">Personnaliser mon Hub →</a></p></article>
 </main>
 {% endblock %}
