@@ -13,20 +13,20 @@ services:
 
   App\Service\Integration\FootballApiClient:
     arguments:
-      $footballApiKey: '%env(default::FOOTBALL_API_KEY)%'
-      $footballApiBase: '%env(default::FOOTBALL_API_BASE)%'
+      $footballApiKey: '%env(FOOTBALL_API_KEY)%'
+      $footballApiBase: '%env(FOOTBALL_API_BASE)%'
 
   App\Service\Integration\IdfmClient:
     arguments:
-      $idfmApiKey: '%env(default::IDFM_API_KEY)%'
-      $idfmApiBase: '%env(default::IDFM_API_BASE)%'
+      $idfmApiKey: '%env(IDFM_API_KEY)%'
+      $idfmApiBase: '%env(IDFM_API_BASE)%'
 
   App\Service\Integration\SncfClient:
     arguments:
-      $sncfApiToken: '%env(default::SNCF_API_TOKEN)%'
-      $sncfApiBase: '%env(default::SNCF_API_BASE)%'
+      $sncfApiToken: '%env(SNCF_API_TOKEN)%'
+      $sncfApiBase: '%env(SNCF_API_BASE)%'
 
   App\Service\Integration\HomeAssistantClient:
     arguments:
-      $homeAssistantUrl: '%env(default::HOME_ASSISTANT_URL)%'
-      $homeAssistantToken: '%env(default::HOME_ASSISTANT_TOKEN)%'
+      $homeAssistantUrl: '%env(HOME_ASSISTANT_URL)%'
+      $homeAssistantToken: '%env(HOME_ASSISTANT_TOKEN)%'
