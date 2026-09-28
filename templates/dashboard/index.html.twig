@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ user.displayName }} — Nelson Hub{% endblock %}
+{% block body %}
+<main class="shell">
+  <div class="top">
+    <div><p class="muted">NELSON HUB</p><h1>Bonjour {{ user.displayName }}.</h1></div>
+    <div><span class="pill">{{ user.email }}</span> &nbsp; <a href="{{ path('app_logout') }}">Déconnexion</a></div>
+  </div>
+  <section class="grid">
+    <article class="card"><h2>⚽ Sport</h2><p class="muted">Tes équipes uniquement.</p>{% for team in dashboard.sports.teams %}<p><strong>{{ team.name }}</strong></p>{% else %}<p>Aucune équipe suivie.</p>{% endfor %}</article>
+    <article class="card"><h2>🚆 Transports</h2><p>{{ dashboard.transport.favorite_stops|length }} arrêt(s) IDFM favori(s)</p><p>{{ dashboard.transport.favorite_stations|length }} gare(s) SNCF favorite(s)</p></article>
+    <article class="card"><h2>🏠 Maison</h2><p>{{ dashboard.home.favorite_entities|length }} appareil(s) favori(s)</p></article>
+    <article class="card"><h2>🔌 Connexions</h2>{% for name,ok in dashboard.integrationStatus %}<p>{{ ok ? '🟢' : '⚪' }} {{ name }}</p>{% endfor %}</article>
+  </section>
+  <article class="card"><h2>Personnalisation</h2><p class="muted">Ces réglages appartiennent uniquement à ton compte.</p><pre style="white-space:pre-wrap">{{ settings|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre></article>
+</main>
+{% endblock %}
