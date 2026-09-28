@@ -26,6 +26,7 @@ security:
         lifetime: 2592000
         path: /
   access_control:
+    - { path: ^/setup, roles: PUBLIC_ACCESS }
     - { path: ^/login$, roles: PUBLIC_ACCESS }
     - { path: ^/health$, roles: PUBLIC_ACCESS }
     - { path: ^/, roles: ROLE_USER }
